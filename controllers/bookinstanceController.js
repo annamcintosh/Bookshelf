@@ -24,7 +24,7 @@ exports.bookinstance_detail = function(req, res, next) {
         .exec(function (err, bookinstance) {
             if (err) { return next(err); }
             if (bookinstance==null) { // No results.
-                var err = new Error('Book copy not found');
+                const err = new Error('Book copy not found');
                 err.status = 404;
                 return next(err);
             }
@@ -62,7 +62,7 @@ exports.bookinstance_create_post = [
         const errors = validationResult(req);
 
         // Create a BookInstance object with escaped and trimmed data.
-        var bookinstance = new BookInstance(
+        const bookinstance = new BookInstance(
             { book: req.body.book,
                 imprint: req.body.imprint,
                 status: req.body.status,
@@ -75,9 +75,8 @@ exports.bookinstance_create_post = [
                 .exec(function (err, books) {
                     if (err) { return next(err); }
                     // Successful, so render.
-                    res.render('bookinstance_form', { title: 'Create BookInstance', book_list: books, selected_book: bookinstance.book._id , errors: errors.array(), bookinstance: bookinstance });
+                    res.render('bookinstance_form', { title: 'Create BookInstance', book_list: book, selected_book: bookinstance.book._id , errors: errors.array(), bookinstance: bookinstance });
                 });
-            return;
         }
         else {
             // Data from form is valid.
@@ -110,7 +109,7 @@ exports.bookinstance_delete_get = function(req, res, next) {
 };
 
 // Handle BookInstance delete on POST.
-exports.bookinstance_delete_post = function(req, res) {
+exports.bookinstance_delete_post = function(req, res, next) {
     // Data from form is valid. Update the record.
     BookInstance.findByIdAndRemove(req.body.id, function deleteBookInstance(err) {
         if (err) { return next(err); }
@@ -136,7 +135,7 @@ exports.bookinstance_update_get = function(req, res, next) {
                 return next(err);
             }
             // Successful, so render.
-            res.render('bookinstance_form', {title: 'Update Book Instance', book_list : results.books, selected_book : results.bookinstance.book._id, bookinstance : results.bookinstance});
+            res.render('bookinstance_form', {title: 'Update Book Instance', book_list : results.book, selected_book : results.bookinstance.book._id, bookinstance : results.bookinstance});
         });
 
 };
@@ -157,7 +156,7 @@ exports.bookinstance_update_post = [
         const errors = validationResult(req);
 
         // Create a BookInstance object with escaped and trimmed data.
-        var bookinstance = new BookInstance(
+        const bookinstance = new BookInstance(
             { book: req.body.book,
                 imprint: req.body.imprint,
                 status: req.body.status,
@@ -173,7 +172,6 @@ exports.bookinstance_update_post = [
                     // Successful, so render.
                     res.render('bookinstance_form', { title: 'Update BookInstance', book_list: books, selected_book: bookinstance.book._id , errors: errors.array(), bookinstance: bookinstance });
                 });
-            return;
         }
         else {
             // Data from form is valid.
