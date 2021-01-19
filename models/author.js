@@ -1,9 +1,9 @@
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
 const { DateTime } = require("luxon");
 
-var Schema = mongoose.Schema;
+const Schema = mongoose.Schema;
 
-var AuthorSchema = new Schema(
+const AuthorSchema = new Schema(
   {
     first_name: {type: String, required: true, maxlength: 100},
     family_name: {type: String, required: true, maxlength: 100},
@@ -32,13 +32,6 @@ AuthorSchema.virtual('lifespan').get(function() {
     return lifetime_string;
 });
 
-AuthorSchema.virtual('date_of_birth_yyyy_mm_dd').get(function() {
-    return DateTime.fromJSDate(this.date_of_birth).toISODate(); //format 'YYYY-MM-DD'
-});
-
-AuthorSchema.virtual('date_of_death_yyyy_mm_dd').get(function() {
-    return DateTime.fromJSDate(this.date_of_death).toISODate(); //format 'YYYY-MM-DD'
-});
 // Virtual for author's URL
 AuthorSchema
 .virtual('url')
